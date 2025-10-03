@@ -5,101 +5,106 @@
 	<title>Friday Club</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<style>
+		@font-face {
+			font-family: 'SF Pro Display';
+			src: url('https://www.wearfriday.com/cdn/shop/t/2/assets/SF-Pro-Display-Regular.otf?v=183271417193749331561756713608') format('opentype');
+			font-weight: normal;
+			font-style: normal;
+			font-display: swap;
+		}
+
 		html, body {
 			height: 100%;
 			margin: 0;
-		}
-		body {
-			font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-			color: #fff;
+			padding: 0;
+			background: #000;
 			overflow: hidden;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
 		}
 
-		.bg-video {
+		.stage {
 			position: fixed;
 			inset: 0;
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-			z-index: -1;
-		}
-
-		.scrim {
-			position: fixed;
-			inset: 0;
-			background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
-			z-index: 0;
-		}
-
-		.page {
-			position: relative;
-			display: grid;
-			grid-template-rows: auto 1fr;
-			min-height: 100vh;
-			z-index: 1; /* above video */
-			padding: 16px;
-		}
-
-		.logo-wrap {
-			display: flex;
-			justify-content: center;
-			align-items: flex-start;
-			padding-top: 8px;
-		}
-		.logo {
-			width: 220px;
-			max-width: 45vw;
-			height: auto;
-			filter: drop-shadow(0 4px 20px rgba(0,0,0,0.35));
-		}
-
-		.content {
 			display: grid;
 			place-items: center;
-			text-align: center;
-			padding: 24px 16px 32px;
-		}
-		.heading {
-			font-size: clamp(1.5rem, 3.5vw, 3rem);
-			line-height: 1.15;
-			margin: 0 0 8px;
-		}
-		.sub {
-			font-size: clamp(0.95rem, 1.4vw, 1.15rem);
-			opacity: 0.9;
-			max-width: 60ch;
-			margin: 0;
+			background: #000;
+			touch-action: none;
 		}
 
-		@media (max-width: 480px) {
-			.logo { width: 170px; max-width: 60vw; }
-			.content { padding: 16px; }
+		.bg-wrapper {
+			position: relative; /* so we can position the button inside */
+			display: inline-block;
+			line-height: 0;
 		}
 
-		@media (prefers-reduced-motion: reduce) {
-			.bg-video { animation: none; }
+		.bg-wrapper img {
+			display: block;
+			height: 100vh;
+			width: auto;
+			max-width: 100vw;
+			object-fit: contain;
+			object-position: center center;
+			-webkit-user-drag: none;
+			user-select: none;
+		}
+
+		/* When very tall/narrow screens */
+		@media (max-aspect-ratio: 9/16) {
+			.bg-wrapper img {
+				width: 100vw;
+				height: auto;
+				max-height: 100vh;
+			}
+		}
+
+		/* Button style */
+		.shop-btn {
+			position: absolute;
+			left: 50%;
+			transform: translateX(-50%);
+			text-decoration: none;
+			border: 1px solid #FFF;
+			border-radius: 10px;
+			color: #fff;
+			font-family: 'SF Pro Display', serif;
+			padding: 20px;
+			cursor: pointer;
+			white-space: nowrap;
 		}
 	</style>
 </head>
 <body>
-<video class="bg-video" autoplay muted loop playsinline>
-	<source src="/public/videos/background.mp4" type="video/mp4" />
-	Your browser does not support the video tag.
-</video>
-
-<div class="scrim" aria-hidden="true"></div>
-
-<main class="page" role="main">
-	<div class="logo-wrap">
-		<img class="logo" src="/public/images/logo.png" alt="Friday Club Logo" />
-	</div>
-
-	<section class="content">
-		<div>
-			<h1 class="heading">Welcome to Friday Club</h1>
-			<p class="sub">Good vibes, great people, and unforgettable Fridays.</p>
+<main class="page" role="main" aria-label="Friday Club">
+	<section class="main-section" aria-hidden="true">
+		<div class="stage">
+			<div class="bg-wrapper">
+				<img
+					id="bg-img"
+					src="public/images/background.jpeg"
+					alt="Friday Club background"
+					loading="eager"
+					decoding="async"
+					fetchpriority="high"
+				/>
+				<a href="https://www.wearfriday.com/" class="shop-btn" id="shop-btn">SHOP ALL</a>
+			</div>
 		</div>
 	</section>
 </main>
+
+<script>
+	const img = document.getElementById('bg-img');
+	const btn = document.getElementById('shop-btn');
+
+	function repositionBtn() {
+		const imgRect = img.getBoundingClientRect();
+		const offsetFromBottom = imgRect.height * 0.17; // 15% from bottom
+		btn.style.top = (imgRect.height - offsetFromBottom) + 'px';
+	}
+
+	img.addEventListener('load', repositionBtn);
+	window.addEventListener('resize', repositionBtn);
+</script>
 </body>
 </html>
