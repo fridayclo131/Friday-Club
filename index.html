@@ -87,7 +87,7 @@
 					decoding="async"
 					fetchpriority="high"
 				/>
-				<a href="https://www.wearfriday.com/" class="shop-btn" id="shop-btn">SHOP ALL</a>
+				<a href="https://www.wearfriday.com/" class="shop-btn" id="shop-btn" target="_blank">SHOP ALL</a>
 			</div>
 		</div>
 	</section>
@@ -99,7 +99,7 @@
 
 	function repositionBtn() {
 		const imgRect = img.getBoundingClientRect();
-		const offsetFromBottom = imgRect.height * 0.17; // 15% from bottom
+		const offsetFromBottom = imgRect.height * 0.17;
 		btn.style.top = (imgRect.height - offsetFromBottom) + 'px';
 	}
 
